@@ -65,7 +65,13 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        $category = Category::with('news')->findOrFail($id);
+        $category = Category::with(
+            [
+                'news' => function ($q) {
+                    $q->active();
+                }
+            ]
+        )->findOrFail($id);
         return view('categories.show', compact('category'));
     }
 
@@ -92,7 +98,7 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'title' => 'required|max:70|unique:categories,title,'.$id.'|regex:/^[a-zа-яё0-9\s]+$/iu',
+            'title' => 'required|max:70|unique:categories,title,' . $id . '|regex:/^[a-zа-яё0-9\s]+$/iu',
             'parent_id' => 'nullable|integer|exists:categories,id',
         ]);
         $category = Category::findOrFail($id);

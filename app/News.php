@@ -22,7 +22,7 @@ class News extends Model
 
     // Условие получения только активных новостей
     public function scopeActive($query) {
-        return $query->where('active', true);
+        return $query->where('active', 1);
     }
 
     public function setAnnouncementAttribute($value)
